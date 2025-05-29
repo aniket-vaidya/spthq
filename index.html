@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thank You!</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap');
+
+  :root {
+    --primary-color: #ff6f61;
+    --secondary-color: #4a4e69;
+    --accent-color: #f7cac9;
+    --background-color: #fff0f5;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--background-color);
+    font-family: 'Montserrat', sans-serif;
+    color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin: 0;
+    letter-spacing: 2px;
+    animation: fadeInDown 1.5s ease forwards;
+    cursor: pointer;
+  }
+
+  h2 {
+    font-weight: 400;
+    font-size: 1.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+    opacity: 0;
+    animation: fadeInUp 1.5s ease 1.6s forwards;
+  }
+
+  p {
+    font-size: 1.25rem;
+    max-width: 400px;
+    margin: 0 auto;
+    color: var(--secondary-color);
+    opacity: 0;
+    animation: fadeInUp 1.5s ease 2.6s forwards;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .heart {
+    font-size: 5rem;
+    color: var(--primary-color);
+    margin: 1rem 0;
+    user-select: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+  .heart:active {
+    transform: scale(1.2);
+  }
+
+  .heart.animate-beat {
+    animation: beat 0.8s ease forwards;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes beat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.3);
+    }
+    50% {
+      transform: scale(1);
+    }
+  }
+
+  .container {
+    background: white;
+    padding: 3rem 3.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(255,111,97,0.3);
+    max-width: 460px;
+    width: 100%;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Confetti styles */
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary-color);
+    opacity: 0;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* Love emoji animation */
+  .love-emoji {
+    position: absolute;
+    font-size: 1.5rem;
+    user-select: none;
+    pointer-events: none;
+    animation: floatUp 1.2s ease forwards;
+    opacity: 1;
+    color: var(--primary-color);
+    will-change: transform, opacity;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px) scale(1.3);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Thank you message container">
+    <h1 id="thankYouTitle" tabindex="0" aria-label="Thank You Title">Thank You!</h1>
+    <div id="heart" class="heart" aria-label="Heart icon, click to send love" role="button" tabindex="0" title="Click me!">❤️</div>
+    <h2>For your wonderful birthday wishes</h2>
+    <p id="thankYouNote" tabindex="0" aria-label="Thank you note paragraph">You made my day truly special with your thoughtful message. Your kindness means so much to me, and I feel blessed to have you in my life.</p>
+  </div>
+
+<script>
+  // Utility to create confetti pieces
+  function createConfettiPiece(x, y, color) {
+    const piece = document.createElement('div');
+    piece.classList.add('confetti-piece');
+    piece.style.left = x + 'px';
+    piece.style.top = y + 'px';
+    piece.style.backgroundColor = color;
+    return piece;
+  }
+
+  // Animate confetti pieces with random directions and fade out
+  function animateConfetti(container) {
+    const colors = ['#ff6f61', '#f7cac9', '#ffb6b9', '#f67280', '#c06c84'];
+    const piecesCount = 25;
+    const pieces = [];
+
+    for(let i=0; i < piecesCount; i++) {
+      const x = container.clientWidth / 2;
+      const y = container.clientHeight / 2;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const piece = createConfettiPiece(x, y, color);
+      container.appendChild(piece);
+      pieces.push(piece);
+    }
+
+    pieces.forEach(piece => {
+      piece.style.opacity = 1;
+      const xMove = (Math.random() - 0.5) * 200;
+      const yMove = Math.random() * -150 - 100;
+      const rotate = (Math.random() - 0.5) * 360;
+      piece.style.transition = 'all 1s ease-out';
+      setTimeout(() => {
+        piece.style.transform = `translate(${xMove}px, ${yMove}px) rotate(${rotate}deg)`;
+        piece.style.opacity = 0;
+      }, 50);
+    });
+
+    // Remove confetti pieces after animation
+    setTimeout(() => {
+      pieces.forEach(piece => container.removeChild(piece));
+    }, 1200);
+  }
+
+  // Create and animate floating love emojis above the heart
+  function spawnLoveEmojis(container, originX, originY) {
+    const emojisCount = 10;
+    const emojis = [];
+    const emojiChar = '❤️';
+
+    for (let i = 0; i < emojisCount; i++) {
+      const emoji = document.createElement('div');
+      emoji.textContent = emojiChar;
+      emoji.classList.add('love-emoji');
+      // Start near the origin with random horizontal offset
+      const offsetX = (Math.random() - 0.5) * 40;
+      emoji.style.left = (originX + offsetX) + 'px';
+      emoji.style.top = originY + 'px';
+
+      // Random delay for float up animation for a scattered effect
+      emoji.style.animationDelay = (i * 100) + 'ms';
+
+      container.appendChild(emoji);
+      emojis.push(emoji);
+
+      // Remove emoji after animation ends
+      emoji.addEventListener('animationend', () => {
+        emoji.remove();
+      });
+    }
+  }
+
+  const heart = document.getElementById('heart');
+  const container = document.querySelector('.container');
+  const thankYouTitle = document.getElementById('thankYouTitle');
+  const thankYouNote = document.getElementById('thankYouNote');
+
+  function beatHeart() {
+    if (heart.classList.contains('animate-beat')) return; // Prevent overlap
+    heart.classList.add('animate-beat');
+    setTimeout(() => heart.classList.remove('animate-beat'), 800);
+  }
+
+  function triggerConfetti() {
+    animateConfetti(container);
+  }
+
+  function triggerLoveEmojis() {
+    // Get heart position relative to container
+    const heartRect = heart.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const originX = heartRect.left - containerRect.left + heartRect.width / 2;
+    const originY = heartRect.top - containerRect.top;
+    spawnLoveEmojis(container, originX, originY);
+  }
+
+  heart.addEventListener('click', () => {
+    beatHeart();
+    triggerConfetti();
+    triggerLoveEmojis();
+  });
+
+  thankYouTitle.addEventListener('click', () => {
+    triggerConfetti();
+  });
+
+  thankYouNote.addEventListener('click', () => {
+    triggerConfetti();
+  });
+
+  // Make keyboard accessible: space or enter triggers click on heart
+  heart.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      heart.click();
+    }
+  });
+
+  thankYouTitle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      thankYouTitle.click();
+    }
+  });
+
+  thankYouNote.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      thankYouNote.click();
+    }
+  });
+
+</script>
+</body>
+</html>
+
